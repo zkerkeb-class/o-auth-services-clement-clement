@@ -10,7 +10,7 @@ export function configureStrategies(app) {
     userInfoURL: 'https://openidconnect.googleapis.com/v1/userinfo',
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3000/callback/google',
+    callbackURL: `http://${process.env.PORT}/callback/google`,
     scope: 'openid profile email',
   });
   configureOIDCStrategy(app, 'github', {
@@ -20,7 +20,7 @@ export function configureStrategies(app) {
     userInfoURL: 'https://api.github.com/user',
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3000/callback/github',
+    callbackURL: `http://localhost:${process.env.PORT}/callback/github`,
     scope: 'user:email',
   });
 

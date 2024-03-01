@@ -36,14 +36,6 @@ export function configureOIDCStrategy(app, name, config) {
     ),
   );
 
-  // Définit les routes pour l'authentification avec cette stratégie
-  app.get('/auth/google', passport.authenticate('google'));
-  app.get(
-    '/auth/github',
-    passport.authenticate('github', {scope: ['user:email']}),
-  );
-  app.get('/auth/facebook', passport.authenticate('facebook'));
-
   app.get(
     `/callback/google`,
     passport.authenticate('google', {failureRedirect: 'http://localhost:3000'}),
