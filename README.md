@@ -30,8 +30,21 @@ Create `.env` file
 
  <pre>
 PORT=3002
+URL='http://localhost:3002'
 
 JWT_SECRET=
+
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_CALL_BACK_URL='http://localhost:3002/auth/callback/google'
+
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+GITHUB_CALL_BACK_URL='http://localhost:3002/auth/callback/github'
+
+FACEBOOK_CLIENT_ID=
+FACEBOOK_CLIENT_SECRET=
+FACEBOOK_CALL_BACK_URL='http://localhost:3002/auth/callback/facebook'
  </pre>
 
 ## Run project
