@@ -44,7 +44,6 @@ export function configureOIDCStrategy(app, name, config) {
   );
   app.get('/auth/facebook', passport.authenticate('facebook'));
 
-
   app.get(
     `/callback/google`,
     passport.authenticate('google', {failureRedirect: 'http://localhost:3000'}),
@@ -86,7 +85,9 @@ export function configureOIDCStrategy(app, name, config) {
 
   app.get(
     `/callback/facebook`,
-    passport.authenticate('facebook', {failureRedirect: 'http://localhost:3000'}),
+    passport.authenticate('facebook', {
+      failureRedirect: 'http://localhost:3000',
+    }),
     (req, res) => {
       if (req.user) {
         res.json({
@@ -101,7 +102,6 @@ export function configureOIDCStrategy(app, name, config) {
     },
   );
 }
-
 
 passport.serializeUser((user, done) => {
   done(null, user);
