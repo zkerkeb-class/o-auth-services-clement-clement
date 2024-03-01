@@ -2,9 +2,9 @@ import express from 'express';
 import {
   authenticate,
   logout,
-  // handleCallbackGithub,
-  // handleCallbackGoogle,
-  // handleCallbackFacebook,
+  googleCallback,
+  githubCallback,
+  facebookCallback,
 } from '../controllers/authController.js';
 
 const router = express.Router();
@@ -13,14 +13,10 @@ router.get('/google', authenticate('google'));
 router.get('/github', authenticate('github'));
 router.get('/facebook', authenticate('facebook'));
 
-router.get('/logout', logout);
+router.get('/callback/google', googleCallback);
+router.get('/callback/github', githubCallback);
+router.get('/callback/facebook', facebookCallback);
 
-// router.get('/callback/google', authenticate('google'), handleCallbackGoogle);
-// router.get('/callback/github', authenticate('github'), handleCallbackGithub);
-// router.get(
-//   '/callback/facebook',
-//   authenticate('facebook'),
-//   handleCallbackFacebook,
-// );
+router.get('/logout', logout);
 
 export {router as authRoutes};
