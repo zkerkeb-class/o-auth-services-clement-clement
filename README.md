@@ -42,9 +42,9 @@ GITHUB_CLIENT_ID=
 GITHUB_CLIENT_SECRET=
 GITHUB_CALL_BACK_URL='http://localhost:3002/auth/callback/github'
 
-FACEBOOK_CLIENT_ID=
-FACEBOOK_CLIENT_SECRET=
-FACEBOOK_CALL_BACK_URL='http://localhost:3002/auth/callback/facebook'
+LINKEDIN_CLIENT_ID=
+LINKEDIN_CLIENT_SECRET=
+LINKEDIN_CALL_BACK_URL='http://localhost:3002/auth/callback/linkedin'
  </pre>
 
 ## Run project

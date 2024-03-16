@@ -46,18 +46,21 @@ export const githubCallback = [
   },
 ];
 
-export const facebookCallback = [
-  passport.authenticate('facebook', {failureRedirect: process.env.URL}),
+export const linkedinCallback = [
+  passport.authenticate('linkedin-oidc', {failureRedirect: process.env.URL}),
   (req, res) => {
+    console.log(req);
     if (req.user) {
       res.json({
         id: req.user.id,
         email: req.user.emails[0].value,
-        firstName: req.user.name.givenName,
+        firsName: req.user.name.givenName,
         lastName: req.user.name.familyName,
       });
     } else {
+      console.log(req);
       res.redirect(process.env.URL);
     }
   },
 ];
+

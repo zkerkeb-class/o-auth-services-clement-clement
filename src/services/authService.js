@@ -1,5 +1,5 @@
 import passport from 'passport';
-import {configureOIDCStrategy} from '../../config.js';
+import { configureOIDCStrategy } from '../../config.js';
 
 export function configureStrategies(app) {
   // Configuration pour Google
@@ -23,16 +23,15 @@ export function configureStrategies(app) {
     callbackURL: process.env.GITHUB_CALL_BACK_URL,
     scope: 'user:email',
   });
-
-  configureOIDCStrategy(app, 'facebook', {
-    issuer: 'https://www.facebook.com',
-    authorizationURL: 'https://www.facebook.com/v13.0/dialog/oauth',
-    tokenURL: 'https://graph.facebook.com/v13.0/oauth/access_token',
-    userInfoURL: 'https://graph.facebook.com/me',
-    clientID: process.env.FACEBOOK_CLIENT_ID,
-    clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-    callbackURL:
-      'https://3532-2001-861-388a-5450-549b-c28d-d75c-47d8.ngrok-free.app/callback/facebook',
-    scope: 'openid profile email',
+  configureOIDCStrategy(app, 'linkedin-oidc', {
+    issuer: 'https://www.linkedin.com/',
+    authorizationURL: 'https://www.linkedin.com/oauth/v2/authorization',
+    tokenURL: 'https://www.linkedin.com/oauth/v2/accessToken',
+    userInfoURL: 'https://api.linkedin.com/v2/me',
+    clientID: process.env.LINKEDIN_CLIENT_ID,
+    clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+    callbackURL: process.env.LINKEDIN_CALL_BACK_URL,
+    scope: 'openid email',
   });
+  
 }

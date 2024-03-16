@@ -26,10 +26,20 @@ app.use(passport.session());
 // Configuration des stratégies d'authentification
 configureStrategies(app);
 
+
 // Routes d'authentification
 app.use('/auth', authRoutes);
 
 // Lancez le serveur
 app.listen(process.env.PORT, () => {
   console.log(`Serveur démarré sur http://localhost:${process.env.PORT}`);
+});
+
+app.use(function(err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+app.use((err, req, res, next) => {
+  console.error('Passport error:', err);
+  res.status(500).send('Authentication error');
 });

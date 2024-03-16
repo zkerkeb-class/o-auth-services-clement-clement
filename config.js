@@ -1,10 +1,11 @@
 import passport from 'passport';
-import {Strategy as OIDCStrategy} from 'passport-openidconnect';
-import {Strategy as GitHubStrategy} from 'passport-github2';
+import { Strategy as OIDCStrategy } from 'passport-openidconnect';
+import { Strategy as GitHubStrategy } from 'passport-github2';
+
 import dotenv from 'dotenv';
 dotenv.config();
 export function configureOIDCStrategy(app, name, config) {
-  //GOOGLE
+  //GOOGLE 
   passport.use(
     name,
     new OIDCStrategy(
@@ -15,8 +16,9 @@ export function configureOIDCStrategy(app, name, config) {
         userInfoURL: config.userInfoURL,
         clientID: config.clientID,
         clientSecret: config.clientSecret,
-        callbackURL: process.env.GOOGLE_CALL_BACK_URL,
+        callbackURL: config.callbackURL,
         scope: config.scope,
+        pkce: true,
       },
       (issuer, profile, cb) => {
         return cb(null, profile);
@@ -38,7 +40,34 @@ export function configureOIDCStrategy(app, name, config) {
       },
     ),
   );
+
+  // LINKEDIN
+  passport.use(
+    'linkedin-oidc',
+    new OIDCStrategy(
+      {
+        issuer: 'https://www.linkedin.com/',
+        authorizationURL: 'https://www.linkedin.com/oauth/v2/authorization',
+        tokenURL: 'https://www.linkedin.com/oauth/v2/accessToken',
+        userInfoURL: 'https://api.linkedin.com/v2/me',
+        clientID: process.env.LINKEDIN_CLIENT_ID,
+        clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+        callbackURL: process.env.LINKEDIN_CALL_BACK_URL,
+        scope: config.scope,
+      },
+      (issuer, profile, cb) => {
+        return cb(null, profile);
+      },
+    ),
+  );
+
+
+
+
+
 }
+
+
 
 passport.serializeUser((user, done) => {
   done(null, user);

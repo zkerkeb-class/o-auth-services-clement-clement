@@ -4,19 +4,19 @@ import {
   logout,
   googleCallback,
   githubCallback,
-  facebookCallback,
+  linkedinCallback
 } from '../controllers/authController.js';
 
 const router = express.Router();
 
 router.get('/google', authenticate('google'));
 router.get('/github', authenticate('github'));
-router.get('/facebook', authenticate('facebook'));
+router.get('/linkedin', authenticate('linkedin-oidc'));
 
 router.get('/callback/google', googleCallback);
 router.get('/callback/github', githubCallback);
-router.get('/callback/facebook', facebookCallback);
+router.get('/callback/linkedin', linkedinCallback);
 
 router.get('/logout', logout);
 
-export {router as authRoutes};
+export { router as authRoutes };
