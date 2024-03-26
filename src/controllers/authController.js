@@ -48,7 +48,7 @@ export const githubCallback = [
 
 export const linkedinCallback = [
   passport.authenticate('linkedin-oidc', {failureRedirect: process.env.URL}),
-  ( req, res) => {
+  (req, res) => {
     console.log('cui cui');
     console.log(req);
     if (req.user) {
@@ -64,7 +64,6 @@ export const linkedinCallback = [
     }
   },
 ];
-
 
 // export const azureadCallback = [
 //   passport.authenticate('azuread', {failureRedirect: process.env.URL}),
@@ -86,15 +85,15 @@ export const azureadCallback = [
   // Middleware personnalisé pour capturer les tentatives d'authentification.
   (req, res, next) => {
     passport.authenticate('azuread', (err, user, info) => {
+      console.log('Azure AD callback response:', req);
+      console.error('Passport authentication error:', err);
       if (err) {
         // Log l'erreur et redirige ou répond avec un message d'erreur.
         console.error('Authentication error:', err);
-        return res
-          .status(401)
-          .json({
-            error: 'Authentication failed due to an error.',
-            details: err.message,
-          });
+        return res.status(401).json({
+          error: 'Authentication failed due to an error.',
+          details: err.message,
+        });
       }
       if (!user) {
         // Si pas d'utilisateur, cela signifie une authentification échouée.
@@ -127,7 +126,6 @@ export const azureadCallback = [
     });
   },
 ];
-
 
 // export const linkedinCallback = [
 //   // Custom middleware pour capturer les tentatives d'authentification.

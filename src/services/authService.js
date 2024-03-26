@@ -36,8 +36,10 @@ export function configureStrategies(app) {
   });
 
   configureOIDCStrategy(app, 'azuread', {
-    issuer: 'https://login.microsoftonline.com/ed4b8ed6-ea6d-4dd3-bdba-45e8f83bfa23/v2.0/',
-    authorizationURL: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
+    issuer:
+      'https://login.microsoftonline.com/common/v2.0/',
+    authorizationURL:
+      'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
     tokenURL: 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
     userInfoURL: 'https://graph.microsoft.com/oidc/userinfo',
     clientID: process.env.AZUREAD_CLIENT_ID,

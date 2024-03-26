@@ -19,6 +19,7 @@ export function configureOIDCStrategy(app, name, config) {
         callbackURL: config.callbackURL,
         scope: config.scope,
         pkce: true,
+        validateIssuer: false,
       },
       (issuer, profile, cb) => {
         return cb(null, profile);
