@@ -1,4 +1,5 @@
 import passport from 'passport';
+import axios from 'axios';
 
 export function authenticate(provider) {
   return passport.authenticate(provider);
@@ -15,17 +16,37 @@ export function logout(req, res) {
 
 export const googleCallback = [
   passport.authenticate('google', {failureRedirect: process.env.URL}),
-  (req, res) => {
+  async (req, res) => {
     console.log(req.user.name.givenName);
     if (req.user) {
-      res.json({
-        id: req.user.id,
-        email: req.user.emails[0].value,
-        firsName: req.user.name.givenName,
-        lastName: req.user.name.familyName,
-      });
+      try {
+        // Faites une requête à votre microservice de base de données pour vérifier si l'utilisateur existe
+        const response = await axios.get(
+          `http://localhost:3001/api/check_user?email=${req.user.emails[0].value}`,
+        );
+        const userExists = response.data.exists;
+
+        if (userExists) {
+          // Si l'utilisateur existe, renvoyez les informations de l'utilisateur
+          res.json({
+            id: req.user.id,
+            email: req.user.emails[0].value,
+            firstName: req.user.name.givenName,
+            lastName: req.user.name.familyName,
+          });
+        } else {
+          // Si l'utilisateur n'existe pas, redirigez vers la page d'inscription
+          res.redirect('http://localhost:3000/register');
+        }
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({
+          error:
+            "Une erreur est survenue lors de la vérification de l'existence de l'utilisateur",
+        });
+      }
     } else {
-      res.redirect(process.env.URL);
+      res.redirect('http://localhost:3000/home');
     }
   },
 ];
