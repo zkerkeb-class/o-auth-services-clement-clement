@@ -17,10 +17,8 @@ export function logout(req, res) {
 export const googleCallback = [
   passport.authenticate('google', {failureRedirect: process.env.URL}),
   async (req, res) => {
-    console.log(req.user.name.givenName);
     if (req.user) {
       try {
-        // Faites une requête à votre microservice de base de données pour vérifier si l'utilisateur existe
         const response = await axios.get(
           `http://localhost:3001/api/check_user?email=${req.user.emails[0].value}`,
         );
@@ -35,7 +33,7 @@ export const googleCallback = [
             lastName: req.user.name.familyName,
           });
         } else {
-          // Si l'utilisateur n'existe pas, redirigez vers la page d'inscription
+          // Si l'utilisateur n'existe pas, rediriger vers la page d'inscription
           res.redirect('http://localhost:3000/register');
         }
       } catch (error) {
@@ -53,35 +51,69 @@ export const googleCallback = [
 
 export const githubCallback = [
   passport.authenticate('github', {failureRedirect: process.env.URL}),
-  (req, res) => {
-    console.log(req.user);
+  async (req, res) => {
     if (req.user) {
-      res.json({
-        id: req.user.id,
-        email: req.user.email,
-        firsName: req.user.name,
-      });
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/api/check_user?email=${req.user.email}`,
+        );
+        const userExists = response.data.exists;
+
+        if (userExists) {
+          res.json({
+            id: req.user.id,
+            email: req.user.email,
+            firsName: req.user.name,
+          });
+        } else {
+          // Si l'utilisateur n'existe pas, rediriger vers la page d'inscription
+          res.redirect('http://localhost:3000/register');
+        }
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({
+          error:
+            "Une erreur est survenue lors de la vérification de l'existence de l'utilisateur",
+        });
+      }
     } else {
-      res.redirect(process.env.URL);
+      res.redirect('http://localhost:3000/home');
     }
   },
 ];
 
 export const linkedinCallback = [
-  passport.authenticate('linkedin-oidc', {failureRedirect: process.env.URL}),
-  (req, res) => {
-    console.log('cui cui');
-    console.log(req);
+  passport.authenticate('linkedin-oidc', {
+    failureRedirect: 'http://localhost:3000/home',
+  }),
+  async (req, res) => {
     if (req.user) {
-      res.json({
-        id: req.user.id,
-        email: req.user.emails[0].value,
-        firsName: req.user.name.givenName,
-        lastName: req.user.name.familyName,
-      });
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/api/check_user?email=${req.user.emails[0].value}`,
+        );
+        const userExists = response.data.exists;
+
+        if (userExists) {
+          res.json({
+            id: req.user.id,
+            email: req.user.emails[0].value,
+            firsName: req.user.name.givenName,
+            lastName: req.user.name.familyName,
+          });
+        } else {
+          // Si l'utilisateur n'existe pas, rediriger vers la page d'inscription
+          res.redirect('http://localhost:3000/register');
+        }
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({
+          error:
+            "Une erreur est survenue lors de la vérification de l'existence de l'utilisateur",
+        });
+      }
     } else {
-      console.log(req);
-      res.redirect(process.env.URL);
+      res.redirect('http://localhost:3000/home');
     }
   },
 ];
