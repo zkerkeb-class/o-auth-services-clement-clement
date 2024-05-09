@@ -26,15 +26,16 @@ export const googleCallback = [
 
         if (userExists) {
           // Si l'utilisateur existe, renvoyez les informations de l'utilisateur
+          res.redirect('http://localhost:3000/home');
+        } else {
+          // Si l'utilisateur n'existe pas, rediriger vers la page d'inscription
           res.json({
             id: req.user.id,
             email: req.user.emails[0].value,
             firstName: req.user.name.givenName,
             lastName: req.user.name.familyName,
+            redirect: 'http://localhost:3000/register',
           });
-        } else {
-          // Si l'utilisateur n'existe pas, rediriger vers la page d'inscription
-          res.redirect('http://localhost:3000/register');
         }
       } catch (error) {
         console.error(error);
@@ -44,7 +45,7 @@ export const googleCallback = [
         });
       }
     } else {
-      res.redirect('http://localhost:3000/home');
+      res.redirect('http://localhost:3000/login');
     }
   },
 ];
